@@ -1,7 +1,7 @@
 import {
   ExtensionService,
   Message,
-} from "@/src/services/extension-service.type.ts";
+} from "@/src/services/message/extension-service.type.ts";
 import { WxtRuntime } from "wxt/browser";
 
 export class MessageExtensionService implements ExtensionService {

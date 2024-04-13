@@ -1,5 +1,5 @@
 import { StorefrontRepository } from "@/src/storefront/storefront.repository.ts";
-import { MessageExtensionService } from "@/src/services/message.extension-service.ts";
+import { MessageExtensionService } from "@/src/services/message/message.extension-service.ts";
 
 export default defineContentScript({
   matches: ["https://*/*"],

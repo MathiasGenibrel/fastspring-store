@@ -2,7 +2,7 @@ import { Storefront } from "@/src/storefront/storefront.type.ts";
 import {
   ExtensionService,
   MessageType,
-} from "@/src/services/extension-service.type.ts";
+} from "@/src/services/message/extension-service.type.ts";
 import { z } from "zod";
 import { InvalidEndpointError } from "@/src/storefront/errors/InvalidEndpoint.error.ts";
 
