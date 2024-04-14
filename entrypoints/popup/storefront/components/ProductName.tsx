@@ -1,11 +1,30 @@
 import React from "react";
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 
 interface ProductProps {
   display: string;
   sku: string;
   image: string | null;
 }
+
+const TextStyle = {
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+};
+
+interface NameTooltipProps {
+  name: string;
+  children: React.ReactNode;
+}
+
+const NameTooltip: React.FC<NameTooltipProps> = ({ name, children }) => {
+  return (
+    <Tooltip label={name} openDelay={500}>
+      {children}
+    </Tooltip>
+  );
+};
 
 export const ProductName: React.FC<ProductProps> = ({
   display,
@@ -21,11 +40,17 @@ export const ProductName: React.FC<ProductProps> = ({
         width={12}
         borderRadius={8}
       />
-      <Flex direction={"column"}>
-        <Text noOfLines={1} fontSize={"md"}>
-          {display}
-        </Text>
-        <Text opacity={0.6}>{sku}</Text>
+      <Flex direction={"column"} maxWidth={64} overflow={"hidden"}>
+        <NameTooltip name={display}>
+          <Text fontSize={"md"} {...TextStyle}>
+            {display}
+          </Text>
+        </NameTooltip>
+        <NameTooltip name={sku}>
+          <Text opacity={0.6} {...TextStyle}>
+            {sku}
+          </Text>
+        </NameTooltip>
       </Flex>
     </Flex>
   );
