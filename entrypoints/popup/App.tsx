@@ -1,35 +1,40 @@
-import { useState } from 'react';
-import reactLogo from '@/assets/react.svg';
-import wxtLogo from '/wxt.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { SessionStorageService } from "@/src/services/storage/session.storage-service.ts";
+import { useQuery } from "@tanstack/react-query";
+import { STOREFRONT_KEY } from "@/src/storefront/constants.ts";
+
+const sessionStorageService = new SessionStorageService(storage);
 
 function App() {
+  const sessionStorage = useQuery({
+    queryKey: [STOREFRONT_KEY],
+    queryFn: () => sessionStorageService.get(STOREFRONT_KEY),
+  });
   const [count, setCount] = useState(0);
 
-  return (
-    <>
-      <div>
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} className="logo" alt="WXT logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>WXT + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the WXT and React logos to learn more
-      </p>
-    </>
-  );
+  useEffect(() => {
+    const unwatch = sessionStorageService.watch(
+      STOREFRONT_KEY,
+      (storefront) => {
+        console.log("storefront changed", storefront);
+      },
+    );
+
+    return () => {
+      unwatch();
+    };
+  }, []);
+
+  if (sessionStorage.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (sessionStorage.isError) {
+    return <div>Error</div>;
+  }
+
+  return <section>DATA: {JSON.stringify(sessionStorage.data)}</section>;
 }
 
 export default App;
