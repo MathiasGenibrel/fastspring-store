@@ -10,8 +10,9 @@ export default defineContentScript({
   main() {
     document.addEventListener("DOMContentLoaded", () => {
       const store = document.getElementById("fsc-api");
-      const extensionService = new MessageExtensionService(browser.runtime);
-      const storefrontRepository = new StorefrontRepository(extensionService);
+      const storefrontRepository = new StorefrontRepository(
+        new MessageExtensionService(browser.runtime),
+      );
 
       if (!store) {
         return console.info("This website does not contain Fastspring store");

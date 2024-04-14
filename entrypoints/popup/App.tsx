@@ -36,7 +36,7 @@ function App() {
     return <div>Error</div>;
   }
 
-  if (storefront.data === undefined) {
+  if (!storefront.data) {
     return <div>No data</div>;
   }
 
