@@ -8,6 +8,7 @@ import { ProductName } from "@/entrypoints/popup/storefront/components/ProductNa
 import { Price } from "@/entrypoints/popup/storefront/components/price/Price.tsx";
 import { DiscountPercent } from "@/entrypoints/popup/storefront/components/DiscountPercent.tsx";
 import { StorefrontPayloadSubscription } from "@/src/storefront/storefront.type.ts";
+import { Action } from "@/entrypoints/popup/storefront/components/Action.tsx";
 
 interface ProductProps {
   image: string | null;
@@ -55,6 +56,9 @@ export const Product: React.FC<ProductProps> = ({
       <Td>{offer}</Td>
       <Td>
         <DiscountPercent percent={discount.percent} />
+      </Td>
+      <Td>
+        <Action />
       </Td>
     </Tr>
   );
