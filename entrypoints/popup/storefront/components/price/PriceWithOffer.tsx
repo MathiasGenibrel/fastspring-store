@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
+import { getPriceWithCurrency } from "@/entrypoints/popup/storefront/components/price/getPriceWithCurrency.ts";
 
 export interface Discount {
   percent: number;
@@ -17,14 +18,16 @@ export const PriceWithOffer: React.FC<PriceWithOfferProps> = ({
   price,
   discount,
 }) => {
+  const discountPrice = Math.round((price - discount.total) * 100) / 100;
+
   return (
     <Flex alignItems={"center"} gap={2}>
       <Flex direction={"column"}>
         <Text decoration={"line-through"} opacity={0.6}>
-          {price} {currency}
+          {getPriceWithCurrency(currency, price)}
         </Text>
         <Text fontSize={"md"}>
-          {Math.round((price - discount.total) * 100) / 100} {currency}
+          {getPriceWithCurrency(currency, discountPrice)}
         </Text>
       </Flex>
     </Flex>
