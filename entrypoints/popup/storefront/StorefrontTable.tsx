@@ -18,13 +18,14 @@ export const StorefrontTable: React.FC<StorefrontTableProps> = ({
         <Thead>
           <Tr>
             {title.map((t) => (
-              <Th>{t}</Th>
+              <Th key={t}>{t}</Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
           {data.products.map((d) => (
             <Product
+              key={d.path}
               image={d.image}
               currency={data.currency}
               display={d.display}
