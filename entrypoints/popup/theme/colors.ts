@@ -5,11 +5,9 @@ export const colorsScheme = {
   info: "blue",
   neutral: "gray",
   priority: {
-    // 5 priority levels
-    1: "red",
-    2: "orange",
-    3: "yellow",
-    4: "blue",
-    5: "gray",
+    1: "green",
+    2: "teal",
+    3: "blue",
+    4: "cyan",
   },
 };

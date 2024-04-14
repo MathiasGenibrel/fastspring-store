@@ -12,10 +12,11 @@ export const DiscountPercent: React.FC<DiscountPercentProps> = ({
   const scheme = useOfferColorScheme(percent);
 
   const content = percent > 0 ? `-${percent}%` : "-";
+  const colorScheme = percent > 0 ? scheme : "gray";
 
   return (
     <Center>
-      <Tag size={"sm"} colorScheme={scheme}>
+      <Tag size={"sm"} colorScheme={colorScheme}>
         {content}
       </Tag>
     </Center>

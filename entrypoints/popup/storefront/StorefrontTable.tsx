@@ -2,6 +2,7 @@ import React from "react";
 import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import { StorefrontPayload } from "@/src/storefront/storefront.type.ts";
 import { Product } from "@/entrypoints/popup/storefront/components/Product.tsx";
+import { Sort } from "@/src/helpers/sorter.helper.ts";
 
 interface StorefrontTableProps {
   title: string[];
@@ -23,7 +24,7 @@ export const StorefrontTable: React.FC<StorefrontTableProps> = ({
           </Tr>
         </Thead>
         <Tbody>
-          {data.products.map((d) => (
+          {Sort.byDescending(data.products, "discountPercentValue").map((d) => (
             <Product
               key={d.path}
               image={d.image}
