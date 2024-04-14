@@ -1,12 +1,6 @@
 import React from "react";
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 
-interface ProductProps {
-  display: string;
-  sku: string;
-  image: string | null;
-}
-
 const TextStyle = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
@@ -25,6 +19,12 @@ const NameTooltip: React.FC<NameTooltipProps> = ({ name, children }) => {
     </Tooltip>
   );
 };
+
+interface ProductProps {
+  display: string;
+  sku: string;
+  image: string | null;
+}
 
 export const ProductName: React.FC<ProductProps> = ({
   display,
