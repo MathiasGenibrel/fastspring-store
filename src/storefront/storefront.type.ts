@@ -158,6 +158,15 @@ export interface Storefront {
   modifiedSubscriptionJson: string;
 }
 
+export type StorefrontPayloadSubscription = Pick<
+  Subscription,
+  | "nextChargeDateValue"
+  | "intervalUnit"
+  | "intervalLength"
+  | "nextChargeCurrency"
+  | "nextChargeTotalValue"
+> | null;
+
 export type StorefrontPayload = Pick<
   Storefront,
   | "currency"
@@ -176,13 +185,6 @@ export type StorefrontPayload = Pick<
     | "image"
     | "sku"
   > & {
-    subscription: Pick<
-      Subscription,
-      | "nextChargeDateValue"
-      | "intervalUnit"
-      | "intervalLength"
-      | "nextChargeCurrency"
-      | "nextChargeTotalValue"
-    > | null;
+    subscription: StorefrontPayloadSubscription;
   })[];
 };

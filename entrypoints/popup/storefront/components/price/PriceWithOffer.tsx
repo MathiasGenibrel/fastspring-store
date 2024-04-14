@@ -1,15 +1,16 @@
 import React from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import { getPriceWithCurrency } from "@/entrypoints/popup/storefront/components/price/getPriceWithCurrency.ts";
+import { Flex } from "@chakra-ui/react";
+import {
+  Price,
+  PriceProps,
+} from "@/entrypoints/popup/storefront/components/price/Price.tsx";
 
 export interface Discount {
   percent: number;
   total: number;
 }
 
-interface PriceWithOfferProps {
-  price: number;
-  currency: string;
+interface PriceWithOfferProps extends PriceProps {
   discount: Discount;
 }
 
@@ -17,18 +18,15 @@ export const PriceWithOffer: React.FC<PriceWithOfferProps> = ({
   currency,
   price,
   discount,
+  interval,
 }) => {
   const discountPrice = Math.round((price - discount.total) * 100) / 100;
 
   return (
     <Flex alignItems={"center"} gap={2}>
       <Flex direction={"column"}>
-        <Text decoration={"line-through"} opacity={0.6}>
-          {getPriceWithCurrency(currency, price)}
-        </Text>
-        <Text fontSize={"md"}>
-          {getPriceWithCurrency(currency, discountPrice)}
-        </Text>
+        <Price price={price} currency={currency} withLineThrough />
+        <Price price={discountPrice} currency={currency} interval={interval} />
       </Flex>
     </Flex>
   );
