@@ -1,5 +1,7 @@
+import { STOREFRONT_KEY } from "@/src/storefront/constants.ts";
+
 export enum MessageType {
-  STOREFRONT = "storefront",
+  STOREFRONT = STOREFRONT_KEY,
   ERROR = "error",
 }
 

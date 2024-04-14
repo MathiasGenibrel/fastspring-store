@@ -1,4 +1,7 @@
-import { Storefront } from "@/src/storefront/storefront.type.ts";
+import {
+  Storefront,
+  StorefrontPayload,
+} from "@/src/storefront/storefront.type.ts";
 import {
   ExtensionService,
   MessageType,
@@ -18,7 +21,7 @@ export class StorefrontRepository {
   public async build(endpoint: string) {
     try {
       const store = await this.getStoreContent(endpoint);
-      await this.sendToExtension(store);
+      await this.sendToExtension(this.preparePayloadMessage(store));
     } catch (error) {
       if (error instanceof InvalidEndpointError) {
         return this.sendInvalidEndpointErrorToExtension(error);
@@ -26,6 +29,44 @@ export class StorefrontRepository {
 
       console.error("Unknown error", error);
     }
+  }
+
+  /**
+   * Prepare a storefront format to send to the extension
+   * @param store - Storefront content
+   * @private
+   */
+  private preparePayloadMessage(store: Storefront) {
+    const payload: StorefrontPayload = {
+      currency: store.currency,
+      discountTotalPercentValue: store.discountTotalPercentValue,
+      discountTotalValue: store.discountTotalValue,
+      totalWithTaxValue: store.totalWithTaxValue,
+      products: store.groups
+        .map((group) =>
+          group.items.map((item) => ({
+            discountTotalValue: item.discountTotalValue,
+            autoRenew: item.autoRenew,
+            display: item.display,
+            sku: item.sku,
+            image: item.image,
+            path: item.path,
+            priceValue: item.priceValue,
+            discountPercentValue: item.discountPercentValue,
+            subscription: item.subscription
+              ? {
+                  nextChargeDateValue: item.subscription.nextChargeDateValue,
+                  intervalUnit: item.subscription.intervalUnit,
+                  intervalLength: item.subscription.intervalLength,
+                  nextChargeCurrency: item.subscription.nextChargeCurrency,
+                  nextChargeTotalValue: item.subscription.nextChargeTotalValue,
+                }
+              : null,
+          })),
+        )
+        .flat(),
+    };
+    return payload;
   }
 
   /**
@@ -53,7 +94,7 @@ export class StorefrontRepository {
    * @param store - Storefront content
    * @private
    */
-  private async sendToExtension(store: Storefront) {
+  private async sendToExtension(store: StorefrontPayload) {
     try {
       await this.extensionService.send({
         type: MessageType.STOREFRONT,

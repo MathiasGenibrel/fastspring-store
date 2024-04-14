@@ -157,3 +157,32 @@ export interface Storefront {
   modifiedSubscriptionDefaultQuantity: number;
   modifiedSubscriptionJson: string;
 }
+
+export type StorefrontPayload = Pick<
+  Storefront,
+  | "currency"
+  | "totalWithTaxValue"
+  | "discountTotalValue"
+  | "discountTotalPercentValue"
+> & {
+  products: (Pick<
+    Product,
+    | "display"
+    | "path"
+    | "priceValue"
+    | "discountTotalValue"
+    | "discountPercentValue"
+    | "autoRenew"
+    | "image"
+    | "sku"
+  > & {
+    subscription: Pick<
+      Subscription,
+      | "nextChargeDateValue"
+      | "intervalUnit"
+      | "intervalLength"
+      | "nextChargeCurrency"
+      | "nextChargeTotalValue"
+    > | null;
+  })[];
+};
