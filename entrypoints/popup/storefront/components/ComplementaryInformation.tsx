@@ -10,20 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { Product } from "@/src/storefront/storefront.type.ts";
+import { StringHelper } from "@/src/helpers/string.helper.ts";
 
 interface ComplementaryInformationProps {
   description: Product["description"];
 }
-
-const removeHtmlTags = (text: string) => {
-  // Define the HTML tag pattern
-  const htmlTagsPattern = /<[^>]+>/g;
-
-  // Remove HTML tags from the text using the pattern
-  const cleanText = text.replace(htmlTagsPattern, "");
-
-  return cleanText;
-};
 
 export const ComplementaryInformation: React.FC<
   ComplementaryInformationProps
@@ -36,10 +27,12 @@ export const ComplementaryInformation: React.FC<
       <PopoverContent>
         <PopoverArrow />
         <PopoverCloseButton />
-        <PopoverHeader>Complementary information</PopoverHeader>
+        <PopoverHeader>Description</PopoverHeader>
 
         <PopoverBody style={{ textWrap: "wrap" }}>
-          {removeHtmlTags(description.full || description.summary || "")}
+          {StringHelper.removeHtmlTags(
+            description.full || description.summary || "",
+          )}
         </PopoverBody>
       </PopoverContent>
     </Popover>

@@ -35,7 +35,7 @@ export const StorefrontTable: React.FC<StorefrontTableProps> = ({
                 total: d.discountTotalValue,
               }}
               price={d.priceValue}
-              sku={d.sku}
+              path={d.path}
               subscription={d.subscription}
               description={d.description}
             />

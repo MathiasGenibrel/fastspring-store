@@ -1,37 +1,19 @@
 import React from "react";
-import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { ComplementaryInformation } from "@/entrypoints/popup/storefront/components/ComplementaryInformation.tsx";
 import { Product } from "@/src/storefront/storefront.type.ts";
-
-const TextStyle = {
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-};
-
-interface NameTooltipProps {
-  name: string;
-  children: React.ReactNode;
-}
-
-const NameTooltip: React.FC<NameTooltipProps> = ({ name, children }) => {
-  return (
-    <Tooltip label={name} openDelay={500}>
-      {children}
-    </Tooltip>
-  );
-};
+import { NameTooltip } from "@/entrypoints/popup/storefront/components/tooltip/NameTooltip.tsx";
 
 interface ProductProps {
   display: string;
-  sku: string;
+  path: string;
   image: string | null;
   description: Product["description"];
 }
 
 export const ProductName: React.FC<ProductProps> = ({
   display,
-  sku,
+  path,
   image,
   description,
 }) => {
@@ -56,8 +38,8 @@ export const ProductName: React.FC<ProductProps> = ({
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <NameTooltip name={display}>
-            <Text cursor={"help"} fontSize={"md"} {...TextStyle}>
+          <NameTooltip name={display} type={"display"}>
+            <Text fontSize={"md"} {...TextStyle}>
               {display}
             </Text>
           </NameTooltip>
@@ -65,12 +47,19 @@ export const ProductName: React.FC<ProductProps> = ({
             <ComplementaryInformation description={description} />
           )}
         </Flex>
-        <NameTooltip name={sku}>
+        <NameTooltip name={path} type={"path"}>
           <Text opacity={0.6} {...TextStyle}>
-            {sku}
+            {path}
           </Text>
         </NameTooltip>
       </Flex>
     </Flex>
   );
+};
+
+const TextStyle = {
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  cursor: "help",
 };

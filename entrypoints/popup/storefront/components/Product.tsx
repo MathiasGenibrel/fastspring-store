@@ -18,7 +18,7 @@ interface ProductProps {
   currency: string;
   price: number;
   display: string;
-  sku: string;
+  path: string;
   discount: Discount;
   subscription: StorefrontPayloadSubscription;
   description: IProduct["description"];
@@ -30,7 +30,7 @@ export const Product: React.FC<ProductProps> = ({
   display,
   price,
   image,
-  sku,
+  path,
   subscription,
   description,
 }) => {
@@ -58,7 +58,7 @@ export const Product: React.FC<ProductProps> = ({
       <Td pr={12}>
         <ProductName
           display={display}
-          sku={sku}
+          path={path}
           image={image}
           description={description}
         />
