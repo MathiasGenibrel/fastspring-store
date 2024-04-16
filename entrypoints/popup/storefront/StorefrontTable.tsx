@@ -37,6 +37,7 @@ export const StorefrontTable: React.FC<StorefrontTableProps> = ({
               price={d.priceValue}
               sku={d.sku}
               subscription={d.subscription}
+              description={d.description}
             />
           ))}
         </Tbody>

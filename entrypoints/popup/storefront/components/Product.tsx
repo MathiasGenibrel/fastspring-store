@@ -7,7 +7,10 @@ import { Td, Tr } from "@chakra-ui/react";
 import { ProductName } from "@/entrypoints/popup/storefront/components/ProductName.tsx";
 import { Price } from "@/entrypoints/popup/storefront/components/price/Price.tsx";
 import { DiscountPercent } from "@/entrypoints/popup/storefront/components/DiscountPercent.tsx";
-import { StorefrontPayloadSubscription } from "@/src/storefront/storefront.type.ts";
+import {
+  Product as IProduct,
+  StorefrontPayloadSubscription,
+} from "@/src/storefront/storefront.type.ts";
 import { Action } from "@/entrypoints/popup/storefront/components/Action.tsx";
 
 interface ProductProps {
@@ -18,6 +21,7 @@ interface ProductProps {
   sku: string;
   discount: Discount;
   subscription: StorefrontPayloadSubscription;
+  description: IProduct["description"];
 }
 
 export const Product: React.FC<ProductProps> = ({
@@ -28,6 +32,7 @@ export const Product: React.FC<ProductProps> = ({
   image,
   sku,
   subscription,
+  description,
 }) => {
   const interval = subscription?.intervalUnit
     ? `/ ${subscription?.intervalUnit}`
@@ -51,7 +56,12 @@ export const Product: React.FC<ProductProps> = ({
   return (
     <Tr>
       <Td pr={12}>
-        <ProductName display={display} sku={sku} image={image} />
+        <ProductName
+          display={display}
+          sku={sku}
+          image={image}
+          description={description}
+        />
       </Td>
       <Td>{offer}</Td>
       <Td>

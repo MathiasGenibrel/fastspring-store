@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import "./App.css";
 import { SessionStorageService } from "@/src/services/storage/session.storage-service.ts";
 import { useQuery } from "@tanstack/react-query";
 import { STOREFRONT_KEY } from "@/src/storefront/constants.ts";

@@ -45,7 +45,7 @@ interface Subscription {
   subscriptionSetToDisableNextPeriod: boolean;
 }
 
-interface Product {
+export interface Product {
   selected: boolean;
   path: string;
   pid: string;
@@ -72,7 +72,8 @@ interface Product {
   display: string;
   sku: string;
   description: {
-    summary: string;
+    summary?: string;
+    full?: string;
   };
   pricing: {
     quantity: string; // Depending on the actual type, this can be defined more specifically
@@ -184,6 +185,7 @@ export type StorefrontPayload = Pick<
     | "autoRenew"
     | "image"
     | "sku"
+    | "description"
   > & {
     subscription: StorefrontPayloadSubscription;
   })[];

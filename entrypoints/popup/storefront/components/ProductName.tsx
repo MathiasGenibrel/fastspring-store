@@ -1,5 +1,7 @@
 import React from "react";
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { ComplementaryInformation } from "@/entrypoints/popup/storefront/components/ComplementaryInformation.tsx";
+import { Product } from "@/src/storefront/storefront.type.ts";
 
 const TextStyle = {
   textOverflow: "ellipsis",
@@ -24,12 +26,14 @@ interface ProductProps {
   display: string;
   sku: string;
   image: string | null;
+  description: Product["description"];
 }
 
 export const ProductName: React.FC<ProductProps> = ({
   display,
   sku,
   image,
+  description,
 }) => {
   return (
     <Flex gap={2} alignItems={"center"}>
@@ -40,12 +44,27 @@ export const ProductName: React.FC<ProductProps> = ({
         width={12}
         borderRadius={8}
       />
-      <Flex direction={"column"} maxWidth={64} overflow={"hidden"}>
-        <NameTooltip name={display}>
-          <Text fontSize={"md"} {...TextStyle}>
-            {display}
-          </Text>
-        </NameTooltip>
+      <Flex
+        width={"100%"}
+        direction={"column"}
+        maxWidth={64}
+        overflow={"hidden"}
+      >
+        <Flex
+          direction={"row"}
+          gap={4}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <NameTooltip name={display}>
+            <Text cursor={"help"} fontSize={"md"} {...TextStyle}>
+              {display}
+            </Text>
+          </NameTooltip>
+          {Object.keys(description).length > 0 && (
+            <ComplementaryInformation description={description} />
+          )}
+        </Flex>
         <NameTooltip name={sku}>
           <Text opacity={0.6} {...TextStyle}>
             {sku}
