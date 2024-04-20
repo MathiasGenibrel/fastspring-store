@@ -31,7 +31,7 @@ export const ComplementaryInformation: React.FC<
 
         <PopoverBody style={{ textWrap: "wrap" }}>
           {StringHelper.removeHtmlTags(
-            description.full || description.summary || "",
+            description.full ?? description.summary ?? "",
           )}
         </PopoverBody>
       </PopoverContent>
