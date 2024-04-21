@@ -2,6 +2,7 @@ import { Spinner } from "@chakra-ui/react";
 import { StorefrontTable } from "@/entrypoints/popup/storefront/StorefrontTable.tsx";
 import { useStorefrontTable } from "@/entrypoints/popup/storefront/hooks/useStorefrontTable.tsx";
 import { useStorefrontTableHeaders } from "@/entrypoints/popup/storefront/hooks/useStorefrontTableHeaders.tsx";
+import { Header } from "@/entrypoints/popup/header/Header.tsx";
 
 function App() {
   const {
@@ -30,7 +31,12 @@ function App() {
     return <div>No data</div>;
   }
 
-  return <StorefrontTable headers={headers} data={data} />;
+  return (
+    <>
+      <Header currency={data.currency} existingProducts={data.products} />
+      <StorefrontTable headers={headers} data={data} />
+    </>
+  );
 }
 
 export default App;

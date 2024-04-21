@@ -63,7 +63,7 @@ export const Product: React.FC<ProductProps> = ({
         <DiscountPercent percent={amount.discount} />
       </Td>
       <Td>
-        <Action />
+        <Action path={path} />
       </Td>
     </Tr>
   );
