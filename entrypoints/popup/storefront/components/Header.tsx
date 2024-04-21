@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { ActionType } from "@/src/storefront/storefront.reducer.ts";
 import { Flex, Th } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 export interface HeaderProps {
   title: string;
@@ -52,9 +52,15 @@ export const Header: FC<HeaderProps> = ({ title, sortFunction }) => {
     <Th onClick={handleSort} cursor={"pointer"}>
       <Flex gap={8} alignItems={"center"} justifyContent={"space-between"}>
         {title}
-        <Flex direction={"column"}>
-          <ChevronUpIcon color={isDescending ? "blue" : undefined} />
-          <ChevronDownIcon color={isAscending ? "blue" : undefined} />
+        <Flex direction={"column"} gap={0.5}>
+          <TriangleUpIcon
+            color={isDescending ? "blue" : undefined}
+            fontSize={8}
+          />
+          <TriangleDownIcon
+            color={isAscending ? "blue" : undefined}
+            fontSize={8}
+          />
         </Flex>
       </Flex>
     </Th>
