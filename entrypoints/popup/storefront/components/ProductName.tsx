@@ -29,7 +29,7 @@ export const ProductName: React.FC<ProductProps> = ({
       <Flex
         width={"100%"}
         direction={"column"}
-        maxWidth={64}
+        maxWidth={60}
         overflow={"hidden"}
       >
         <Flex
