@@ -51,7 +51,8 @@ export class StorefrontRepository {
             sku: item.sku,
             image: item.image,
             path: item.path,
-            priceValue: item.priceValue,
+            priceTotalValue: item.priceTotalValue,
+            totalValue: item.totalValue,
             description: item.description,
             discountPercentValue: item.discountPercentValue,
             subscription: item.subscription

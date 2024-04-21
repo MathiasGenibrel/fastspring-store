@@ -37,11 +37,11 @@ export const StorefrontTable: React.FC<StorefrontTableProps> = ({
               image={d.image}
               currency={data.currency}
               display={d.display}
-              discount={{
-                percent: d.discountPercentValue,
-                total: d.discountTotalValue,
+              amount={{
+                price: d.priceTotalValue,
+                discount: d.discountPercentValue,
+                total: d.totalValue,
               }}
-              price={d.priceValue}
               path={d.path}
               subscription={d.subscription}
               description={d.description}

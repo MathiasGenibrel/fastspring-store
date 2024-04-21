@@ -22,8 +22,8 @@ export const useStorefrontTableHeaders = (
       {
         title: "Price",
         sortFunction: {
-          ascending: () => asc("priceValue"),
-          descending: () => desc("priceValue"),
+          ascending: () => asc("totalValue"),
+          descending: () => desc("totalValue"),
           reset: reset,
         },
       },

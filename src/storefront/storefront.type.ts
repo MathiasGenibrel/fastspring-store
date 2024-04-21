@@ -170,10 +170,11 @@ export type StorefrontPayloadSubscription = Pick<
 
 export type StorefrontPayloadProduct = Pick<
   Product,
-  | "discountTotalValue"
   | "path"
-  | "priceValue"
+  | "priceTotalValue"
+  | "totalValue"
   | "discountPercentValue"
+  | "discountTotalValue"
   | "autoRenew"
   | "image"
   | "display"

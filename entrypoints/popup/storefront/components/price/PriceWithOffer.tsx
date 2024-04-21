@@ -10,23 +10,23 @@ export interface Discount {
   total: number;
 }
 
-interface PriceWithOfferProps extends PriceProps {
-  discount: Discount;
+interface PriceWithOfferProps extends Omit<PriceProps, "price"> {
+  amount: {
+    initial: number;
+    total: number;
+  };
 }
 
 export const PriceWithOffer: React.FC<PriceWithOfferProps> = ({
   currency,
-  price,
-  discount,
+  amount,
   interval,
 }) => {
-  const discountPrice = Math.round((price - discount.total) * 100) / 100;
-
   return (
     <Flex alignItems={"center"} gap={2}>
       <Flex direction={"column"}>
-        <Price price={price} currency={currency} withLineThrough />
-        <Price price={discountPrice} currency={currency} interval={interval} />
+        <Price price={amount.initial} currency={currency} withLineThrough />
+        <Price price={amount.total} currency={currency} interval={interval} />
       </Flex>
     </Flex>
   );

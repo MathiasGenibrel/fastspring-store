@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Discount,
-  PriceWithOffer,
-} from "@/entrypoints/popup/storefront/components/price/PriceWithOffer.tsx";
+import { PriceWithOffer } from "@/entrypoints/popup/storefront/components/price/PriceWithOffer.tsx";
 import { Td, Tr } from "@chakra-ui/react";
 import { ProductName } from "@/entrypoints/popup/storefront/components/ProductName.tsx";
 import { Price } from "@/entrypoints/popup/storefront/components/price/Price.tsx";
@@ -16,19 +13,21 @@ import { Action } from "@/entrypoints/popup/storefront/components/Action.tsx";
 interface ProductProps {
   image: string | null;
   currency: string;
-  price: number;
   display: string;
+  amount: {
+    price: number;
+    discount: number;
+    total: number;
+  };
   path: string;
-  discount: Discount;
   subscription: StorefrontPayloadSubscription;
   description: IProduct["description"];
 }
 
 export const Product: React.FC<ProductProps> = ({
   currency,
-  discount,
   display,
-  price,
+  amount,
   image,
   path,
   subscription,
@@ -39,18 +38,14 @@ export const Product: React.FC<ProductProps> = ({
     : "";
 
   const offer =
-    discount.percent > 0 ? (
+    amount.discount > 0 ? (
       <PriceWithOffer
         currency={currency}
-        price={price}
+        amount={{ initial: amount.price, total: amount.total }}
         interval={interval}
-        discount={{
-          percent: discount.percent,
-          total: discount.total,
-        }}
       />
     ) : (
-      <Price currency={currency} price={price} interval={interval} />
+      <Price currency={currency} price={amount.price} interval={interval} />
     );
 
   return (
@@ -65,7 +60,7 @@ export const Product: React.FC<ProductProps> = ({
       </Td>
       <Td>{offer}</Td>
       <Td>
-        <DiscountPercent percent={discount.percent} />
+        <DiscountPercent percent={amount.discount} />
       </Td>
       <Td>
         <Action />
