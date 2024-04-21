@@ -11,7 +11,7 @@ const sessionStorageService = new SessionStorageService(storage);
 function App() {
   const storefront = useQuery({
     queryKey: [STOREFRONT_KEY],
-    queryFn: () => sessionStorageService.get(STOREFRONT_KEY),
+    queryFn: () => sessionStorageService.get<StorefrontPayload>(STOREFRONT_KEY),
   });
 
   useEffect(() => {
