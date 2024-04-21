@@ -1,50 +1,36 @@
-import { useEffect } from "react";
-import { SessionStorageService } from "@/src/services/storage/session.storage-service.ts";
-import { useQuery } from "@tanstack/react-query";
-import { STOREFRONT_KEY } from "@/src/storefront/constants.ts";
 import { Spinner } from "@chakra-ui/react";
 import { StorefrontTable } from "@/entrypoints/popup/storefront/StorefrontTable.tsx";
-import { StorefrontPayload } from "@/src/storefront/storefront.type.ts";
-
-const sessionStorageService = new SessionStorageService(storage);
+import { useStorefrontTable } from "@/entrypoints/popup/storefront/hooks/useStorefrontTable.tsx";
+import { useStorefrontTableHeaders } from "@/entrypoints/popup/storefront/hooks/useStorefrontTableHeaders.tsx";
 
 function App() {
-  const storefront = useQuery({
-    queryKey: [STOREFRONT_KEY],
-    queryFn: () => sessionStorageService.get<StorefrontPayload>(STOREFRONT_KEY),
-  });
+  const {
+    data,
+    isError,
+    isLoading,
+    handleSortReset,
+    handleSortDesc,
+    handleSortAsc,
+  } = useStorefrontTable();
+  const headers = useStorefrontTableHeaders(
+    handleSortAsc,
+    handleSortDesc,
+    handleSortReset,
+  );
 
-  useEffect(() => {
-    const unwatch = sessionStorageService.watch(
-      STOREFRONT_KEY,
-      (storefront) => {
-        console.log("storefront changed", storefront);
-      },
-    );
-
-    return () => {
-      unwatch();
-    };
-  }, []);
-
-  if (storefront.isLoading) {
+  if (isLoading) {
     return <Spinner />;
   }
 
-  if (storefront.isError) {
+  if (isError) {
     return <div>Error</div>;
   }
 
-  if (!storefront.data) {
+  if (!data) {
     return <div>No data</div>;
   }
 
-  return (
-    <StorefrontTable
-      title={["Product", "Price", "Discount"]}
-      data={storefront.data as StorefrontPayload}
-    />
-  );
+  return <StorefrontTable headers={headers} data={data} />;
 }
 
 export default App;

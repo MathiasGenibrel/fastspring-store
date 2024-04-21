@@ -168,6 +168,19 @@ export type StorefrontPayloadSubscription = Pick<
   | "nextChargeTotalValue"
 > | null;
 
+export type StorefrontPayloadProduct = Pick<
+  Product,
+  | "discountTotalValue"
+  | "path"
+  | "priceValue"
+  | "discountPercentValue"
+  | "autoRenew"
+  | "image"
+  | "display"
+  | "sku"
+  | "description"
+> & { subscription: StorefrontPayloadSubscription };
+
 export type StorefrontPayload = Pick<
   Storefront,
   | "currency"
@@ -175,18 +188,5 @@ export type StorefrontPayload = Pick<
   | "discountTotalValue"
   | "discountTotalPercentValue"
 > & {
-  products: (Pick<
-    Product,
-    | "display"
-    | "path"
-    | "priceValue"
-    | "discountTotalValue"
-    | "discountPercentValue"
-    | "autoRenew"
-    | "image"
-    | "sku"
-    | "description"
-  > & {
-    subscription: StorefrontPayloadSubscription;
-  })[];
+  products: StorefrontPayloadProduct[];
 };

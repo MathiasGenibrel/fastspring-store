@@ -1,16 +1,19 @@
 import React from "react";
-import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Thead, Tr } from "@chakra-ui/react";
 import { StorefrontPayload } from "@/src/storefront/storefront.type.ts";
 import { Product } from "@/entrypoints/popup/storefront/components/Product.tsx";
-import { Sort } from "@/src/helpers/sorter.helper.ts";
+import {
+  Header,
+  HeaderProps,
+} from "@/entrypoints/popup/storefront/components/Header.tsx";
 
 interface StorefrontTableProps {
-  title: string[];
+  headers: HeaderProps[];
   data: StorefrontPayload;
 }
 
 export const StorefrontTable: React.FC<StorefrontTableProps> = ({
-  title,
+  headers,
   data,
 }) => {
   return (
@@ -18,13 +21,17 @@ export const StorefrontTable: React.FC<StorefrontTableProps> = ({
       <Table variant="simple">
         <Thead>
           <Tr>
-            {title.map((t) => (
-              <Th key={t}>{t}</Th>
+            {headers.map((header) => (
+              <Header
+                key={header.title}
+                title={header.title}
+                sortFunction={header.sortFunction}
+              />
             ))}
           </Tr>
         </Thead>
         <Tbody>
-          {Sort.byDescending(data.products, "discountPercentValue").map((d) => (
+          {data.products.map((d) => (
             <Product
               key={d.path}
               image={d.image}

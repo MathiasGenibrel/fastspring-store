@@ -55,7 +55,7 @@ export const Product: React.FC<ProductProps> = ({
 
   return (
     <Tr>
-      <Td pr={12}>
+      <Td>
         <ProductName
           display={display}
           path={path}
