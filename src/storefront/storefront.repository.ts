@@ -4,7 +4,7 @@ import {
 } from "@/src/storefront/storefront.type.ts";
 import {
   ExtensionService,
-  MessageType,
+  MessageRouterType,
 } from "@/src/services/message/extension-service.type.ts";
 import { z } from "zod";
 import { InvalidEndpointError } from "@/src/storefront/errors/InvalidEndpoint.error.ts";
@@ -99,7 +99,7 @@ export class StorefrontRepository {
   private async sendToExtension(store: StorefrontPayload) {
     try {
       await this.extensionService.send({
-        type: MessageType.STOREFRONT,
+        type: MessageRouterType.STOREFRONT,
         payload: store,
       });
     } catch (error) {
@@ -117,8 +117,8 @@ export class StorefrontRepository {
   ) {
     try {
       await this.extensionService.send({
-        type: MessageType.ERROR,
-        payload: error,
+        type: MessageRouterType.ERROR,
+        payload: { message: error.message, stack: error.endpoint },
       });
     } catch (error) {
       console.error("Failed to send error to extension", error);

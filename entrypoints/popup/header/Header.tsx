@@ -4,11 +4,15 @@ import { StorefrontPayloadProduct } from "@/src/storefront/storefront.type.ts";
 import { getPriceWithCurrency } from "@/entrypoints/popup/storefront/components/price/getPriceWithCurrency.ts";
 import { useProducts } from "@/entrypoints/popup/header/hooks/useProducts.ts";
 import { useProductsStore } from "@/entrypoints/popup/stores/product.store.ts";
+import { useMutation } from "@tanstack/react-query";
+import { StorefrontPopupRepository } from "@/src/storefront/storefront-popup.repository.ts";
 
 interface HeaderProps {
   currency: string;
   existingProducts: StorefrontPayloadProduct[];
 }
+
+const storefrontPopupRepository = new StorefrontPopupRepository(browser.tabs);
 
 export const Header: React.FC<HeaderProps> = ({
   existingProducts,
@@ -16,6 +20,13 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const products = useProducts(existingProducts);
   const resetProducts = useProductsStore((state) => state.reset);
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      storefrontPopupRepository.build(products.store).then(() => {
+        console.log("Storefront sent");
+      });
+    },
+  });
 
   return (
     <Flex
@@ -48,7 +59,12 @@ export const Header: React.FC<HeaderProps> = ({
         <Button size={"sm"} onClick={resetProducts}>
           Clean up
         </Button>
-        <Button colorScheme={"purple"} size={"sm"}>
+        <Button
+          colorScheme={"purple"}
+          size={"sm"}
+          isLoading={isPending}
+          onClick={() => mutate()}
+        >
           Build it!
         </Button>
       </Flex>

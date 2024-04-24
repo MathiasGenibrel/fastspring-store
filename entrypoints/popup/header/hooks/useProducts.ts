@@ -19,6 +19,7 @@ export const useProducts = (existingProducts: StorefrontPayloadProduct[]) => {
     .reduce((a, b) => a + b, 0);
 
   return {
+    store: productsStore,
     length: productsLength,
     quantity: productsQuantity,
     price: productsPrice,

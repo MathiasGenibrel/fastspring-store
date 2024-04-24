@@ -4,6 +4,7 @@ import {
 } from "@/src/services/storage/storage.service.ts";
 import { Unwatch, WxtStorage } from "wxt/storage";
 import { MESSAGE_SCHEMA } from "@/src/services/message/message.schema.ts";
+import { Message } from "@/src/services/message/extension-service.type.ts";
 
 class ActiveTabNotFoundError extends Error {
   constructor() {
@@ -28,21 +29,31 @@ export class SessionStorageService implements StorageService {
     return await this.storageService.getItem(`session:${key}-${hostname}`);
   }
 
-  public async save(key: string, value: Record<string, any>): Promise<void> {
-    const hostname = await this.getHostname();
+  public async save(
+    key: string,
+    value: Record<string, any>,
+    currentHostname?: string,
+  ): Promise<void> {
+    const hostname = currentHostname ?? (await this.getHostname());
 
     return this.storageService.setItem(`session:${key}-${hostname}`, value);
   }
 
-  public watch(key: string, callback: StorageWatchCallback): Unwatch {
-    return this.storageService.watch(`session:${key}`, (value) => {
-      const validateMessage = MESSAGE_SCHEMA.parse(value);
+  public watch(
+    key: string,
+    hostname: string,
+    callback: StorageWatchCallback,
+  ): Unwatch {
+    return this.storageService.watch(`session:${key}-${hostname}`, (value) => {
+      const validateMessage = MESSAGE_SCHEMA.parse(value) as Message;
       callback(validateMessage);
     });
   }
 
-  public async remove(key: string): Promise<void> {
-    return this.storageService.removeItem(`session:${key}`);
+  public async remove(key: string, currentHostname?: string): Promise<void> {
+    const hostname = currentHostname ?? (await this.getHostname());
+
+    return this.storageService.removeItem(`session:${key}-${hostname}`);
   }
 
   private async getHostname(): Promise<string> {
