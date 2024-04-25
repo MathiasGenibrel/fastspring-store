@@ -1,25 +1,48 @@
+interface FastspringProduct {
+  path: string;
+  quantity: number;
+}
+
+interface FastspringPush {
+  reset: boolean;
+  products: FastspringProduct[];
+}
+
+interface Builder {
+  push: (data: FastspringPush) => void;
+  checkout: () => void;
+}
+
+interface FastSpring {
+  builder: Builder;
+}
+
 export class FastspringRepository {
   constructor() {}
 
   public static async buildCheckout(storeContent: Record<string, number>) {
+    if (!("fastspring" in window)) {
+      throw new Error("Fastspring SDK, not loaded fastspring object in window");
+    }
+
     try {
-      // const builder = await this.getBuilder();
-      // builder.push({ products: storeContent });
+      const products = Object.entries(storeContent).map(([path, quantity]) => ({
+        path,
+        quantity,
+      }));
+
+      const fastspring = window.fastspring as FastSpring;
+
+      // Add product to fastspring store
+      fastspring.builder.push({
+        reset: true,
+        products,
+      });
+
+      // Open checkout
+      fastspring.builder.checkout();
     } catch (error) {
       console.error("Unknown error", error);
     }
-  }
-
-  private static async getBuilder(): Promise<any> {
-    const response = await fetch(
-      "https://d1f8f9xcsvx3ha.cloudfront.net/sbl/0.8.9/fastspring-builder.min.js",
-      {
-        method: "GET",
-      },
-    );
-
-    console.log(response);
-
-    return await response.text();
   }
 }

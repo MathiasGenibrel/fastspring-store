@@ -1,6 +1,10 @@
 import { StorefrontRepository } from "@/src/storefront/storefront.repository.ts";
 import { MessageExtensionService } from "@/src/services/message/message.extension-service.ts";
 import { browser } from "wxt/browser";
+import { FastspringRepository } from "@/src/fastspring/fastspring.repository.ts";
+import { MESSAGE_RUNTIME_SCHEMA } from "@/src/services/message/message.schema.ts";
+import { MessageRuntimeType } from "@/src/services/message/extension-service.type.ts";
+import FastspringSdk from "@/src/fastspring/fastspring.sdk.ts";
 
 export default defineContentScript({
   matches: ["https://*/*"],
@@ -27,31 +31,31 @@ export default defineContentScript({
           });
       }
 
-      // const tempScript = document.createElement("script");
-      // tempScript.id = "fsc-api";
-      // tempScript.type = "text/javascript";
-      // Object.entries(store.dataset).forEach(([key, value]) => {
-      //   tempScript.dataset[key] = value;
-      // });
-      // document.head.appendChild(tempScript);
-      //
-      // console.log(fastspringSDK);
+      const fastspringScript = document.createElement("script");
+      // Use for SBL version
+      fastspringScript.src = "0.8.9";
+      fastspringScript.id = "fsc-api";
+      fastspringScript.type = "text/javascript";
 
-      // browser.runtime.onMessage.addListener((message: unknown) => {
-      //   const validatedMessage = MESSAGE_RUNTIME_SCHEMA.parse(message);
-      //
-      //   switch (validatedMessage.type) {
-      //     case MessageRuntimeType.FASTSPRING_BUILD_CHECKOUT:
-      //       FastspringRepository.buildCheckout(
-      //         validatedMessage.payload as Record<string, number>,
-      //       ).then(() => {
-      //         console.log("Checkout built");
-      //       });
-      //       break;
-      //     default:
-      //       throw new Error(`Unknown message type`);
-      //   }
-      // });
+      Object.entries(store.dataset).forEach(([key, value]) => {
+        fastspringScript.dataset[key] = value;
+      });
+      document.head.appendChild(fastspringScript);
+
+      browser.runtime.onMessage.addListener((message: unknown) => {
+        const validatedMessage = MESSAGE_RUNTIME_SCHEMA.parse(message);
+        FastspringSdk();
+
+        switch (validatedMessage.type) {
+          case MessageRuntimeType.FASTSPRING_BUILD_CHECKOUT:
+            FastspringRepository.buildCheckout(
+              validatedMessage.payload as Record<string, number>,
+            ).then(() => {});
+            break;
+          default:
+            throw new Error(`Unknown message type`);
+        }
+      });
     });
   },
 });
