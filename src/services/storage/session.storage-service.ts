@@ -62,8 +62,6 @@ export class SessionStorageService implements StorageService {
       currentWindow: true,
     });
 
-    console.log(tabs);
-
     if (!tabs[0]) throw new ActiveTabNotFoundError();
     if (!tabs[0].url) throw new ActiveTabWithoutUrlError();
 
