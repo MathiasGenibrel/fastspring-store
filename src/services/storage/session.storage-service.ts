@@ -57,14 +57,16 @@ export class SessionStorageService implements StorageService {
   }
 
   private async getHostname(): Promise<string> {
-    const [activeTab] = await browser.tabs.query({
+    const tabs = await browser.tabs.query({
       active: true,
       currentWindow: true,
     });
 
-    if (!activeTab) throw new ActiveTabNotFoundError();
-    if (!activeTab.url) throw new ActiveTabWithoutUrlError();
+    console.log(tabs);
 
-    return new URL(activeTab.url).hostname;
+    if (!tabs[0]) throw new ActiveTabNotFoundError();
+    if (!tabs[0].url) throw new ActiveTabWithoutUrlError();
+
+    return new URL(tabs[0].url).hostname;
   }
 }

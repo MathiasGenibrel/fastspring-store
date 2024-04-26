@@ -1,11 +1,11 @@
 import { defineConfig } from "wxt";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react"; // See https://wxt.dev/api/config.html
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifestVersion: 3,
   manifest: {
-    permissions: ["storage"],
+    permissions: ["storage", "tabs"],
     content_scripts: [
       {
         matches: ["https://*/*"],

@@ -207,7 +207,7 @@ export default function () {
       this.aKey = $fscContainer.getAttribute("data-access-key");
       this.continuous =
         $fscContainer.getAttribute("data-continuous") === "true";
-      this.sblVersion = $fscContainer.getAttribute("src");
+      this.sblVersion = $fscContainer.getAttribute("data-sbl");
     },
 
     /**
@@ -883,7 +883,6 @@ export default function () {
       } else {
         // this.sblVersion is currently = ".../sbl/0.8.1/..." but we want just "0.8.1"
         var sblVersionNumber = null;
-        console.log("SBL VERSION", this.sblVersion);
         if (this.sblVersion.indexOf("sbl") !== -1) {
           var sblDirectoryPath = this.sblVersion.substring(
             this.sblVersion.indexOf("sbl"),
@@ -1778,7 +1777,7 @@ export default function () {
       Markup.uninstall();
       Popup.destroy();
 
-      var existing = document.querySelector("script#fsc-api");
+      var existing = document.querySelector("section#fsc-api");
       existing.parentNode.removeChild(existing);
       delete window._f;
       delete window.fastspring;
@@ -3485,8 +3484,7 @@ export default function () {
      * Loads FastSpring CSS
      */
     loadFastSpringCSS: function () {
-      var baseUrl = document.querySelector("script#fsc-api").src;
-      console.log("baseUrl", baseUrl);
+      var baseUrl = document.querySelector("section#fsc-api").dataset.sbl;
       if (baseUrl == null) {
         return;
       }
@@ -3513,7 +3511,7 @@ export default function () {
       oHead.appendChild(oStyle);
     },
   };
-  var fscContainer = document.querySelector("script#fsc-api");
+  var fscContainer = document.querySelector("section#fsc-api");
   var fscSession = window.fscSession || {};
   var APIInitialized = false;
   var fscMerging = false;

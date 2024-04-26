@@ -31,16 +31,14 @@ export default defineContentScript({
           });
       }
 
-      const fastspringScript = document.createElement("script");
-      // Use for SBL version
-      fastspringScript.src = "0.8.9";
-      fastspringScript.id = "fsc-api";
-      fastspringScript.type = "text/javascript";
+      const fastspring = document.createElement("section");
+      fastspring.dataset.sbl = "0.8.9"; // Required by sdk
+      fastspring.id = "fsc-api";
 
       Object.entries(store.dataset).forEach(([key, value]) => {
-        fastspringScript.dataset[key] = value;
+        fastspring.dataset[key] = value;
       });
-      document.head.appendChild(fastspringScript);
+      document.head.appendChild(fastspring);
 
       browser.runtime.onMessage.addListener((message: unknown) => {
         const validatedMessage = MESSAGE_RUNTIME_SCHEMA.parse(message);
