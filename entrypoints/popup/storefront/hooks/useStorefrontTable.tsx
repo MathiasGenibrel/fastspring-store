@@ -56,6 +56,7 @@ export const useStorefrontTable = () => {
 
   return {
     data: table,
+    reload: storefront.refetch,
     isLoading: storefront.isLoading,
     isError: storefront.isError,
     handleSortDesc,

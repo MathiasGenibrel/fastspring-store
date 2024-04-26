@@ -1,14 +1,16 @@
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import { StorefrontTable } from "@/entrypoints/popup/storefront/StorefrontTable.tsx";
 import { useStorefrontTable } from "@/entrypoints/popup/storefront/hooks/useStorefrontTable.tsx";
 import { useStorefrontTableHeaders } from "@/entrypoints/popup/storefront/hooks/useStorefrontTableHeaders.tsx";
 import { Header } from "@/entrypoints/popup/header/Header.tsx";
+import { NoData } from "@/entrypoints/popup/no-data/NoData.tsx";
 
 function App() {
   const {
     data,
     isError,
     isLoading,
+    reload,
     handleSortReset,
     handleSortDesc,
     handleSortAsc,
@@ -29,18 +31,18 @@ function App() {
   }
 
   if (!data) {
-    return <div>No data</div>;
+    return <NoData reloadStore={reload} />;
   }
 
   return (
-    <Flex minWidth={"780px"} direction={"column"}>
+    <>
       <Header
         currency={data.currency}
         handleSearch={handleSearch}
         existingProducts={data.products}
       />
       <StorefrontTable headers={headers} data={data} />
-    </Flex>
+    </>
   );
 }
 

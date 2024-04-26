@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./style.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <App />
+        <Flex direction={"column"} minWidth={"780px"}>
+          <App />
+        </Flex>
       </ChakraProvider>
     </QueryClientProvider>
   </React.StrictMode>,
