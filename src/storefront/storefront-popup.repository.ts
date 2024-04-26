@@ -27,6 +27,7 @@ export class StorefrontPopupRepository {
     };
 
     await this.tabService.sendMessage(await this.getTabID(), message);
+    window.close();
   }
 
   private async getTabID(): Promise<number> {

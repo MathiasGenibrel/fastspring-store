@@ -1,14 +1,17 @@
 import React from "react";
-import { Button, Flex, Tag } from "@chakra-ui/react";
+import { Button, ButtonGroup, Flex, IconButton, Tag } from "@chakra-ui/react";
 import { StorefrontPayloadProduct } from "@/src/storefront/storefront.type.ts";
 import { getPriceWithCurrency } from "@/entrypoints/popup/storefront/components/price/getPriceWithCurrency.ts";
 import { useProducts } from "@/entrypoints/popup/header/hooks/useProducts.ts";
 import { useProductsStore } from "@/entrypoints/popup/stores/product.store.ts";
 import { useMutation } from "@tanstack/react-query";
 import { StorefrontPopupRepository } from "@/src/storefront/storefront-popup.repository.ts";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { Search } from "@/entrypoints/popup/header/components/search/Search.tsx";
 
 interface HeaderProps {
   currency: string;
+  handleSearch: (search: string) => void;
   existingProducts: StorefrontPayloadProduct[];
 }
 
@@ -16,6 +19,7 @@ const storefrontPopupRepository = new StorefrontPopupRepository(browser.tabs);
 
 export const Header: React.FC<HeaderProps> = ({
   existingProducts,
+  handleSearch,
   currency,
 }) => {
   const products = useProducts(existingProducts);
@@ -28,9 +32,11 @@ export const Header: React.FC<HeaderProps> = ({
     },
   });
 
+  const canBuild: boolean = !!products.length && products.quantity > 0;
+
   return (
     <Flex
-      paddingX={4}
+      paddingX={2}
       paddingY={2}
       marginX={4}
       marginY={2}
@@ -43,6 +49,7 @@ export const Header: React.FC<HeaderProps> = ({
       alignItems={"center"}
       justifyContent={"space-between"}
     >
+      <Search handleSearchContent={handleSearch} />
       <Flex gap={4} alignItems={"center"}>
         <Tag size={"sm"} colorScheme={"teal"}>
           {products.length} products
@@ -55,19 +62,31 @@ export const Header: React.FC<HeaderProps> = ({
         </Tag>
       </Flex>
 
-      <Flex gap={4} alignItems={"center"}>
-        <Button size={"sm"} onClick={resetProducts}>
-          Clean up
-        </Button>
+      <ButtonGroup
+        isAttached
+        colorScheme={"purple"}
+        opacity={canBuild ? 1 : 0.5}
+      >
+        <IconButton
+          size={"sm"}
+          aria-label={"Reset products store"}
+          onClick={() => canBuild && resetProducts()}
+          cursor={canBuild ? "pointer" : "not-allowed"}
+          variant={"outline"}
+          icon={<DeleteIcon />}
+          borderRadius={6}
+        />
         <Button
-          colorScheme={"purple"}
           size={"sm"}
           isLoading={isPending}
-          onClick={() => mutate()}
+          onClick={() => canBuild && mutate()}
+          cursor={canBuild ? "pointer" : "not-allowed"}
+          borderRadius={6}
+          disabled={!canBuild}
         >
           Build it!
         </Button>
-      </Flex>
+      </ButtonGroup>
     </Flex>
   );
 };

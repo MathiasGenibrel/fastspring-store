@@ -8,6 +8,7 @@ import { Sort } from "@/src/helpers/sorter.helper.ts";
 export enum ActionType {
   INIT = "init",
   RESET = "reset",
+  SEARCH = "search",
   SORT_BY_ASCENDING = "sort_by_ascending",
   SORT_BY_DESCENDING = "sort_by_descending",
 }
@@ -27,10 +28,18 @@ type ReducerAction =
       payload: SortingPayload;
     }
   | {
+      type: ActionType.SEARCH;
+      payload: {
+        defaultState: StorefrontPayload;
+        search: string;
+      };
+    }
+  | {
       type: ActionType.RESET;
     };
 
 let initialState: ReducerState = null;
+const productNameRegex = new RegExp(/^[A-Za-z]+(?:[\s\-][A-Za-z]+)*$/, "i");
 
 export const reducer: Reducer<ReducerState, ReducerAction> = (
   state,
@@ -43,6 +52,17 @@ export const reducer: Reducer<ReducerState, ReducerAction> = (
 
     case ActionType.RESET:
       return initialState;
+
+    case ActionType.SEARCH:
+      if (!state) return state;
+      return {
+        ...state,
+        products: action.payload.defaultState.products.filter(
+          (product) =>
+            product.display.toLowerCase().includes(action.payload.search) ||
+            product.path.toLowerCase().includes(action.payload.search),
+        ),
+      };
 
     case ActionType.SORT_BY_ASCENDING:
       if (!state) return state;

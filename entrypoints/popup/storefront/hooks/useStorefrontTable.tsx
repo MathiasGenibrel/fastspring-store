@@ -26,6 +26,14 @@ export const useStorefrontTable = () => {
     }
   }, [storefront.data]);
 
+  const handleSearch = (search: string) => {
+    if (!storefront.data) return;
+    dispatchTable({
+      type: ActionType.SEARCH,
+      payload: { defaultState: storefront.data, search },
+    });
+  };
+
   const handleSortDesc: SortMethod = (key: keyof StorefrontPayloadProduct) => {
     dispatchTable({
       type: ActionType.SORT_BY_DESCENDING,
@@ -53,5 +61,6 @@ export const useStorefrontTable = () => {
     handleSortDesc,
     handleSortAsc,
     handleSortReset,
+    handleSearch,
   };
 };
