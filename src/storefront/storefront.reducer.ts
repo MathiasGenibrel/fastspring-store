@@ -59,8 +59,12 @@ export const reducer: Reducer<ReducerState, ReducerAction> = (
         ...state,
         products: action.payload.defaultState.products.filter(
           (product) =>
-            product.display.toLowerCase().includes(action.payload.search) ||
-            product.path.toLowerCase().includes(action.payload.search),
+            product.display
+              .toLowerCase()
+              .includes(action.payload.search.toLowerCase()) ||
+            product.path
+              .toLowerCase()
+              .includes(action.payload.search.toLowerCase()),
         ),
       };
 
